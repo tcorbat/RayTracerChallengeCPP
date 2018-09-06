@@ -33,7 +33,7 @@ template <std::size_t Rows, std::size_t Columns, typename ValueType = double>
 struct Matrix  {
 	std::array<ValueType, Rows * Columns> values{};
 
-	std::size_t toAbsoluteOffset(MatrixIndex const index) const {
+	constexpr std::size_t toAbsoluteOffset(MatrixIndex const index) const {
 		if (index.row.value >= Rows) {
 			throw std::invalid_argument{"Row access outside of available rows"};
 		}
@@ -168,7 +168,7 @@ constexpr auto transpose(Matrix<N, M, T> const & matrix) {
 
 namespace {
 	template <std::size_t N, typename T = double>
-	auto fillIdentity() {
+	constexpr auto fillIdentity() {
 		Matrix<N, N, T> result{};
 		for (auto i = 0u; i < N; ++i) {
 			result[Row{i}, Column{i}] = 1;
@@ -178,7 +178,7 @@ namespace {
 }
 
 template <std::size_t N, typename T = double>
-Matrix<N, N, T> identity = fillIdentity<N, T>();
+constexpr Matrix<N, N, T> identity = fillIdentity<N, T>();
 
 template <std::size_t N, std::size_t M, typename T>
 constexpr auto submatrix(Matrix<N, M, T> const & matrix, Row skippedRow, Column skippedColumn) {
@@ -231,7 +231,7 @@ constexpr bool invertible(Matrix<N, M, T> const & matrix) {
 namespace {
 
 template <std::size_t N, std::size_t M, typename T, typename F>
-auto forAllCells(Matrix<N, M, T> const & matrix, F function) {
+constexpr auto transformCells(Matrix<N, M, T> const & matrix, F function) {
 	Matrix<N, M, T> result{};
 	for (auto row = 0_row; row < Row{N}; ++row) {
 		for (auto column = 0_column; column < Column{M}; ++column) {
@@ -241,19 +241,28 @@ auto forAllCells(Matrix<N, M, T> const & matrix, F function) {
 	return result;
 }
 
+template <std::size_t N, std::size_t M, typename T, typename F>
+constexpr void forAllCells(Matrix<N, M, T> const & matrix, F function) {
+	for (auto row = 0_row; row < Row{N}; ++row) {
+		for (auto column = 0_column; column < Column{M}; ++column) {
+			function(row, column);
+		}
+	}
+}
+
 }
 
 
 template <std::size_t N, std::size_t M, typename T>
-auto cofactorsOf(Matrix<N, M, T> const & matrix) {
-	return forAllCells(matrix, [&](auto row, auto column) {
+constexpr auto cofactorsOf(Matrix<N, M, T> const & matrix) {
+	return transformCells(matrix, [&](auto row, auto column) {
 		return cofactor(matrix, row, column);
 	});
 }
 
 template <std::size_t N, std::size_t M, typename T>
-auto minorsOf(Matrix<N, M, T> const & matrix) {
-	return forAllCells(matrix, [&](auto row, auto column) {
+constexpr auto minorsOf(Matrix<N, M, T> const & matrix) {
+	return transformCells(matrix, [&](auto row, auto column) {
 		return minor(matrix, row, column);
 	});
 }

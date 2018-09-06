@@ -11,33 +11,31 @@
 void testDefaultMatrixIsAllZero() {
 	constexpr auto kRows = 4;
 	constexpr auto kColumns = 4;
-	Matrix<kRows, kColumns> const m{};
+	constexpr Matrix<kRows, kColumns> m{};
 
-	for (auto const row : Range<Row>{0_row, Row{kRows}}) {
-		for (auto const column : Range<Column>{0_column, Column{kColumns}}) {
-			double const value = m[row, column];
-			ASSERT_EQUAL(0.0, value);
-		}
-	}
+	forAllCells(m, [&](Row row, Column column) {
+		double const value = m[row, column];
+		ASSERT_EQUAL(0.0, value);
+	});
 }
 
 void testMatrixConstructedWithValues() {
-	auto const kRows = 4;
-	auto const kColumns = 4;
-	Matrix<kRows, kColumns> const m {
+	constexpr auto kRows = 4;
+	constexpr auto kColumns = 4;
+	constexpr Matrix<kRows, kColumns> m {
 					 1.0,  2.0,  3.0,  4.0,
 					 5.5,  6.5,  7.5,  8.5,
 					 9.0, 10.0, 11.0, 12.0,
 					13.5, 14.5, 15.5, 16.5
 	};
 
-	std::array<double, 16> const expectedValues {
+	constexpr std::array<double, 16> expectedValues {
 					 1.0,  2.0,  3.0,  4.0,
 					 5.5,  6.5,  7.5,  8.5,
 					 9.0, 10.0, 11.0, 12.0,
 					13.5, 14.5, 15.5, 16.5
 	};
-	std::array<double, 16> const actualValues {
+	constexpr std::array<double, 16> actualValues {
 		m[0_row, 0_column], m[0_row, 1_column], m[0_row, 2_column], m[0_row, 3_column],
 		m[1_row, 0_column], m[1_row, 1_column],	m[1_row, 2_column],	m[1_row, 3_column],
 		m[2_row, 0_column],	m[2_row, 1_column],	m[2_row, 2_column],	m[2_row, 3_column],
@@ -48,17 +46,17 @@ void testMatrixConstructedWithValues() {
 }
 
 void testTwoTimesTwoMatrix() {
-	auto const kRows = 2;
-	auto const kColumns = 2;
-	Matrix<kRows, kColumns> const m {
+	constexpr auto kRows = 2;
+	constexpr auto kColumns = 2;
+	constexpr Matrix<kRows, kColumns> m {
 		-3.0,  5.0,
 		 1.0, -2.0
 	};
-	std::array<double, 4> const expectedValues {
+	constexpr std::array<double, 4> expectedValues {
 		-3.0,  5.0,
 		 1.0, -2.0
 	};
-	std::array<double, 4> const actualValues {
+	constexpr std::array<double, 4> actualValues {
 		m[0_row, 0_column], m[0_row, 1_column],
 		m[1_row, 0_column], m[1_row, 1_column]
 	};
@@ -67,19 +65,19 @@ void testTwoTimesTwoMatrix() {
 
 
 void testThreeTimesThreeMatrix() {
-	auto const kRows = 3;
-	auto const kColumns = 3;
-	Matrix<kRows, kColumns> const m {
+	constexpr auto kRows = 3;
+	constexpr auto kColumns = 3;
+	constexpr Matrix<kRows, kColumns> m {
 		-3.0,  5.0,  0.0,
 		 1.0, -2.0, -7.0,
 		 0.0,  1.0,  1.0
 	};
-	std::array<double, 9> const expectedValues {
+	constexpr std::array<double, 9> expectedValues {
 		-3.0,  5.0,  0.0,
 		 1.0, -2.0, -7.0,
 		 0.0,  1.0,  1.0
 	};
-	std::array<double, 9> const actualValues {
+	constexpr std::array<double, 9> actualValues {
 		m[0_row, 0_column], m[0_row, 1_column], m[0_row, 2_column],
 		m[1_row, 0_column], m[1_row, 1_column], m[1_row, 2_column],
 		m[2_row, 0_column], m[2_row, 1_column], m[2_row, 2_column]
@@ -88,21 +86,21 @@ void testThreeTimesThreeMatrix() {
 }
 
 void testMultiplyTwoMatrices() {
-	auto const kRows = 4;
-	auto const kColumns = 4;
-	Matrix<kRows, kColumns> const m1 {
+	constexpr auto kRows = 4;
+	constexpr auto kColumns = 4;
+	constexpr Matrix<kRows, kColumns> m1 {
 		 1.0,  2.0,  3.0,  4.0,
 		 2.0,  3.0,  4.0,  5.0,
 		 3.0,  4.0,  5.0,  6.0,
 		 4.0,  5.0,  6.0,  7.0
 	};
-	Matrix<kRows, kColumns> const m2 {
+	constexpr Matrix<kRows, kColumns> m2 {
 		 0.0,  1.0,  2.0,  4.0,
 		 1.0,  2.0,  4.0,  8.0,
 		 2.0,  4.0,  8.0, 16.0,
 		 4.0,  8.0, 16.0, 32.0
 	};
-	Matrix<kRows, kColumns> const expected {
+	constexpr Matrix<kRows, kColumns> expected {
 		24.0,  49.0,  98.0, 196.0,
 		31.0,  64.0, 128.0, 256.0,
 		38.0,  79.0, 158.0, 316.0,
@@ -113,38 +111,38 @@ void testMultiplyTwoMatrices() {
 }
 
 void testAsMatrix() {
-	Direction const direction{1.0, 2.0, 3.0};
-	Matrix<4, 1> const expected{1.0, 2.0, 3.0, 0.0};
+	constexpr Direction direction{1.0, 2.0, 3.0};
+	constexpr Matrix<4, 1> expected{1.0, 2.0, 3.0, 0.0};
 	ASSERT_EQUAL(expected, asMatrix(direction));
 }
 
 void testMultiplyMatrixAndDirection() {
-	Matrix<4, 4> const A {
+	constexpr Matrix<4, 4> A {
 		1.0, 2.0, 3.0, 4.0,
 		2.0, 4.0, 4.0, 2.0,
 		8.0, 6.0, 4.0, 1.0,
 		0.0, 0.0, 0.0, 1.0
 	};
-	Direction const direction{1.0, 2.0, 3.0};
-	Matrix<4, 1> const expected{14.0, 22.0, 32.0, 0.0};
-	auto const result = A * asMatrix(direction);
+	constexpr Direction direction{1.0, 2.0, 3.0};
+	constexpr Matrix<4, 1> expected{14.0, 22.0, 32.0, 0.0};
+	constexpr auto result = A * asMatrix(direction);
 	ASSERT_EQUAL(expected, result);
 }
 
 void testMultiplyMatrixAndPoint() {
-	Matrix<4, 4> const A {
+	constexpr Matrix<4, 4> A {
 		1.0,  0.0,  0.0,  5.0,
 		0.0,  1.0,  0.0, -3.0,
 		0.0,  0.0,  1.0,  2.0,
 		0.0,  0.0,  0.0,  1.0
 	};
-	Point const point{-3.0, 4.0, 5.0};
-	Matrix<4, 1> const expected {2.0, 1.0, 7.0, 1.0};
+	constexpr Point point{-3.0, 4.0, 5.0};
+	constexpr Matrix<4, 1> expected {2.0, 1.0, 7.0, 1.0};
 	ASSERT_EQUAL(expected, A * asMatrix(point));
 }
 
 void testIdentityMatrix() {
-	Matrix<5, 5> const expected {
+	constexpr Matrix<5, 5> expected {
 		1.0, 0.0, 0.0, 0.0, 0.0,
 		0.0, 1.0, 0.0, 0.0, 0.0,
 		0.0, 0.0, 1.0, 0.0, 0.0,
@@ -155,7 +153,7 @@ void testIdentityMatrix() {
 }
 
 void testMultiplicationIdentityWithMatrix() {
-	Matrix<4, 4> const expected {
+	constexpr Matrix<4, 4> expected {
 		24.0,  49.0,  98.0, 196.0,
 		31.0,  64.0, 128.0, 256.0,
 		38.0,  79.0, 158.0, 316.0,
@@ -165,7 +163,7 @@ void testMultiplicationIdentityWithMatrix() {
 }
 
 void testMultiplicationMatrixWithIdentity() {
-	Matrix<4, 4> const expected {
+	constexpr Matrix<4, 4> expected {
 		24.0,  49.0,  98.0, 196.0,
 		31.0,  64.0, 128.0, 256.0,
 		38.0,  79.0, 158.0, 316.0,
@@ -175,13 +173,13 @@ void testMultiplicationMatrixWithIdentity() {
 }
 
 void testTransposeMatrix() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		24.0,  49.0,  98.0, 196.0,
 		31.0,  64.0, 128.0, 256.0,
 		38.0,  79.0, 158.0, 316.0,
 		45.0,  94.0, 188.0, 376.0
 	};
-	Matrix<4, 4> const expected {
+	constexpr Matrix<4, 4> expected {
 		24.0,  31.0,  38.0,  45.0,
 		49.0,  64.0,  79.0, 94.0,
 		98.0, 128.0, 158.0, 188.0,
@@ -191,7 +189,7 @@ void testTransposeMatrix() {
 }
 
 void testTwoByTwoDeterminant() {
-	Matrix<2, 2> const matrix {
+	constexpr Matrix<2, 2> matrix {
 		 1.0, 5.0,
 		-3.0, 2.0
 	};
@@ -200,12 +198,12 @@ void testTwoByTwoDeterminant() {
 }
 
 void testSubmatrixOfThreeByThree() {
-	Matrix<3, 3> const matrix {
+	constexpr Matrix<3, 3> matrix {
 		 1.0,  5.0,  0.0,
 		-3.0,  2.0,  7.0,
 		 0.0,  6.0, -3.0
 	};
-	Matrix<2, 2> const expected {
+	constexpr Matrix<2, 2> expected {
 		-3.0,  2.0,
 		 0.0,  6.0
 	};
@@ -213,13 +211,13 @@ void testSubmatrixOfThreeByThree() {
 }
 
 void testSubmatrixFourByFour() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		-6.0,  1.0,  1.0,  6.0,
 		-8.0,  5.0,  8.0,  6.0,
 		-1.0,  0.0,  8.0,  2.0,
 		-7.0,  1.0, -1.0,  1.0
 	};
-	Matrix<3, 3> const expected {
+	constexpr Matrix<3, 3> expected {
 		-6.0,  1.0,  6.0,
 		-8.0,  8.0,  6.0,
 		-7.0, -1.0,  1.0
@@ -228,7 +226,7 @@ void testSubmatrixFourByFour() {
 }
 
 void testMinorOfThreeByThree() {
-	Matrix<3, 3> const matrix {
+	constexpr Matrix<3, 3> matrix {
 		3.0,  5.0,  0.0,
 		2.0, -1.0, -7.0,
 		6.0, -1.0,  5.0
@@ -237,38 +235,38 @@ void testMinorOfThreeByThree() {
 }
 
 void testDeterminantOfSubmatrix() {
-	Matrix<3, 3> const matrix {
+	constexpr Matrix<3, 3> matrix {
 		3.0,  5.0,  0.0,
 		2.0, -1.0, -7.0,
 		6.0, -1.0,  5.0
 	};
-	Matrix<3, 3> const expected {
+	constexpr Matrix<3, 3> expected {
 		-12.0,  52.0,  4.0,
 		 25.0,  15.0, -33.0,
 		-35.0, -21.0, -13.0
 	};
-	Matrix<3, 3> const minors = minorsOf(matrix);
+	constexpr Matrix<3, 3> minors = minorsOf(matrix);
 	ASSERT_EQUAL(expected, minors);
 }
 
 
 void testCofactors() {
-	Matrix<3, 3> const matrix {
+	constexpr Matrix<3, 3> matrix {
 		3.0,  5.0,  0.0,
 		2.0, -1.0, -7.0,
 		6.0, -1.0,  5.0
 	};
-	Matrix<3, 3> const expected {
+	constexpr Matrix<3, 3> expected {
 		-12.0, -52.0,  4.0,
 		-25.0,  15.0,  33.0,
 		-35.0,  21.0, -13.0
 	};
-	Matrix<3, 3> const cofactors = cofactorsOf(matrix);
+	constexpr Matrix<3, 3> cofactors = cofactorsOf(matrix);
 	ASSERT_EQUAL(expected, cofactors);
 }
 
 void testDeterminantOfThreeByThree() {
-	Matrix<3, 3> const matrix {
+	constexpr Matrix<3, 3> matrix {
 		 1.0,  2.0,  6.0,
 		-5.0,  8.0, -4.0,
 		 2.0,  6.0,  4.0
@@ -277,7 +275,7 @@ void testDeterminantOfThreeByThree() {
 }
 
 void testDeterminantOfFourByFour() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		-2.0, -8.0,  3.0,  5.0,
 		-3.0,  1.0,  7.0,  3.0,
 		 1.0,  2.0, -9.0,  6.0,
@@ -287,7 +285,7 @@ void testDeterminantOfFourByFour() {
 }
 
 void testIsInvertibleWhenDeterminantIsNotZero() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		 6.0,  4.0,  4.0,  4.0,
 		 5.0,  5.0,  7.0,  6.0,
 		 4.0, -9.0,  3.0, -7.0,
@@ -297,7 +295,7 @@ void testIsInvertibleWhenDeterminantIsNotZero() {
 }
 
 void testIsNotInvertibleWhenDeterminantIsZero() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		-4.0,  2.0, -2.0, -3.0,
 		 9.0,  6.0,  2.0,  6.0,
 		 0.0, -5.0,  1.0, -5.0,
@@ -307,13 +305,13 @@ void testIsNotInvertibleWhenDeterminantIsZero() {
 }
 
 void testCofactorsForInversion_step1() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		-5.0,  2.0,  6.0, -8.0,
 		 1.0, -5.0,  1.0,  8.0,
 		 7.0,  7.0, -6.0, -7.0,
 		 1.0, -3.0,  7.0,  4.0
 	};
-	Matrix<4, 4> const expected {
+	constexpr Matrix<4, 4> expected {
 		 116.0, -430.0, - 42.0, -278.0,
 		 240.0, -775.0, -119.0, -433.0,
 		 128.0, -236.0, - 28.0, -160.0,
@@ -323,13 +321,13 @@ void testCofactorsForInversion_step1() {
 }
 
 void testTransposedCofactorsForInversion_step2() {
-	Matrix<4, 4> const cofactors {
+	constexpr Matrix<4, 4> cofactors {
 		 116.0, -430.0, - 42.0, -278.0,
 		 240.0, -775.0, -119.0, -433.0,
 		 128.0, -236.0, - 28.0, -160.0,
 		- 24.0,  277.0,  105.0,  163.0
 	};
-	Matrix<4, 4> const expected {
+	constexpr Matrix<4, 4> expected {
 		 116.0, 240.0,   128.0, - 24.0,
 		-430.0, -775.0, -236.0,  277.0,
 		- 42.0, -119.0, - 28.0,  105.0,
@@ -339,7 +337,7 @@ void testTransposedCofactorsForInversion_step2() {
 }
 
 void testOriginalDeterminant_step3() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		-5.0,  2.0,  6.0, -8.0,
 		 1.0, -5.0,  1.0,  8.0,
 		 7.0,  7.0, -6.0, -7.0,
@@ -349,14 +347,14 @@ void testOriginalDeterminant_step3() {
 }
 
 void testDivideTransposedByDeterminant_step4() {
-	Matrix<4, 4> const transposed {
+	constexpr Matrix<4, 4> transposed {
 		 116.0, 240.0,   128.0, - 24.0,
 		-430.0, -775.0, -236.0,  277.0,
 		- 42.0, -119.0, - 28.0,  105.0,
 		-278.0, -433.0, -160.0,  163.0
 	};
-	double const determinant = 532;
-	Matrix<4, 4> const expected {
+	constexpr double determinant = 532;
+	constexpr Matrix<4, 4> expected {
 		 0.218045,  0.451128,  0.240602, -0.045113,
 		-0.808271, -1.456767, -0.443609,  0.520677,
 		-0.078947, -0.223684, -0.052632,  0.197368,
@@ -366,7 +364,7 @@ void testDivideTransposedByDeterminant_step4() {
 }
 
 void testInverseOfMatrixWithDeterminantZeroThrows() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		-4.0,  2.0, -2.0, -3.0,
 		 9.0,  6.0,  2.0,  6.0,
 		 0.0, -5.0,  1.0, -5.0,
@@ -376,13 +374,13 @@ void testInverseOfMatrixWithDeterminantZeroThrows() {
 }
 
 void testInverseMatrix1() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		-5.0,  2.0,  6.0, -8.0,
 		 1.0, -5.0,  1.0,  8.0,
 		 7.0,  7.0, -6.0, -7.0,
 		 1.0, -3.0,  7.0,  4.0
 	};
-	Matrix<4, 4> const expected {
+	constexpr Matrix<4, 4> expected {
 		 0.218045,  0.451128,  0.240602, -0.045113,
 		-0.808271, -1.456767, -0.443609,  0.520677,
 		-0.078947, -0.223684, -0.052632,  0.197368,
@@ -392,13 +390,13 @@ void testInverseMatrix1() {
 }
 
 void testInverseMatrix2() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		 8.0, -5.0,  9.0,  2.0,
 		 7.0,  5.0,  6.0,  1.0,
 		-6.0,  0.0,  9.0,  6.0,
 		-3.0,  0.0, -9.0, -4.0
 	};
-	Matrix<4, 4> const expected {
+	constexpr Matrix<4, 4> expected {
 		-0.153846, -0.153846, -0.282051, -0.538462,
 		-0.076923,  0.123077,  0.025641,  0.030769,
 		 0.358974,  0.358974,  0.435897,  0.923077,
@@ -408,13 +406,13 @@ void testInverseMatrix2() {
 }
 
 void testInverseMatrix3() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		 9.0,  3.0,  0.0,  9.0,
 		-5.0, -2.0, -6.0, -3.0,
 		-4.0,  9.0,  6.0,  4.0,
 		-7.0,  6.0,  6.0,  2.0
 	};
-	Matrix<4, 4> const expected {
+	constexpr Matrix<4, 4> expected {
 		-0.040741, -0.077778,  0.144444, -0.222222,
 		-0.077778,  0.033333,  0.366667, -0.333333,
 		-0.029012, -0.146296, -0.109259,  0.129630,
@@ -424,13 +422,13 @@ void testInverseMatrix3() {
 }
 
 void testMultiplyingAProductByItsInverse() {
-	Matrix<4, 4> const matrixA {
+	constexpr Matrix<4, 4> matrixA {
 		 3.0, -9.0,  7.0,  3.0,
 		 3.0, -8.0,  2.0, -9.0,
 		-4.0,  4.0,  4.0,  1.0,
 		-6.0,  5.0, -1.0,  1.0
 	};
-	Matrix<4, 4> const matrixB {
+	constexpr Matrix<4, 4> matrixB {
 		 8.0,  2.0,  2.0,  2.0,
 		 3.0, -1.0,  7.0,  0.0,
 		 7.0,  0.0,  5.0,  4.0,
@@ -440,12 +438,12 @@ void testMultiplyingAProductByItsInverse() {
 }
 
 void testInvertIdentityMatrix() {
-	auto const ident = identity<4>;
+	constexpr auto ident = identity<4>;
 	ASSERT_EQUAL(ident, inverse(ident));
 }
 
 void testMultiplyByInverse() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		 3.0, -9.0,  7.0,  3.0,
 		 3.0, -8.0,  2.0, -9.0,
 		-4.0,  4.0,  4.0,  1.0,
@@ -455,7 +453,7 @@ void testMultiplyByInverse() {
 }
 
 void testInverseOfTransposeIsTransposeOfInverse() {
-	Matrix<4, 4> const matrix {
+	constexpr Matrix<4, 4> matrix {
 		 3.0, -9.0,  7.0,  3.0,
 		 3.0, -8.0,  2.0, -9.0,
 		-4.0,  4.0,  4.0,  1.0,
@@ -467,8 +465,8 @@ void testInverseOfTransposeIsTransposeOfInverse() {
 void testEffectOfModifiedIdentity() {
 	auto modifiedIdentiy = identity<4>;
 	modifiedIdentiy[1_row, 1_column] = 2.0;
-	Matrix<1, 4> const tuple{1.0, 2.0, 3.0, 4.0};
-	Matrix<1, 4> const expected{1.0, 4.0, 3.0, 4.0};
+	constexpr Matrix<1, 4> tuple{1.0, 2.0, 3.0, 4.0};
+	constexpr Matrix<1, 4> expected{1.0, 4.0, 3.0, 4.0};
 	ASSERT_EQUAL(expected, tuple * modifiedIdentiy);
 }
 
