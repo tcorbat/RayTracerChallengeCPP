@@ -2,6 +2,11 @@
 #include "Transformations.h"
 #include "cute.h"
 
+#include <boost/math/constants/constants.hpp>
+#include <cmath>
+
+template <typename T>
+constexpr auto pi = boost::math::constants::pi<double>();
 
 
 void testTranslationMatrix() {
@@ -67,6 +72,55 @@ void testReflectionScaling() {
 	ASSERT_EQUAL(expected, transformation * point);
 }
 
+void testRotationAroundXAxisHalfQuarter() {
+	constexpr Point point{0.0, 1.0, 0.0};
+	constexpr auto halfQuarter = rotation_x(pi<double> / 4.0);
+	constexpr Point expected{0.0, std::sqrt(2.0)/2.0, std::sqrt(2.0)/2.0};
+	ASSERT_EQUAL(expected, halfQuarter * point);
+}
+
+void testRotationAroundXAxisQuarter() {
+	constexpr Point point{0.0, 1.0, 0.0};
+	constexpr auto halfQuarter = rotation_x(pi<double> / 2.0);
+	constexpr Point expected{0.0, 0.0, 1.0};
+	ASSERT_EQUAL(expected, halfQuarter * point);
+}
+
+void testInverseRotationAroundXAxisHalfQuarter() {
+	constexpr Point point{0.0, 1.0, 0.0};
+	constexpr auto halfQuarter = rotation_x(pi<double> / 4.0);
+	constexpr Point expected{0.0, std::sqrt(2.0)/2.0, -std::sqrt(2.0)/2.0};
+	ASSERT_EQUAL(expected, inverse(halfQuarter) * point);
+}
+
+void testRotationAroundYAxisHalfQuarter() {
+	constexpr Point point{0.0, 0.0, 1.0};
+	constexpr auto halfQuarter = rotation_y(pi<double> / 4.0);
+	constexpr Point expected{std::sqrt(2.0)/2.0, 0.0, std::sqrt(2.0)/2.0};
+	ASSERT_EQUAL(expected, halfQuarter * point);
+}
+
+void testRotationAroundYAxisQuarter() {
+	constexpr Point point{0.0, 0.0, 1.0};
+	constexpr auto halfQuarter = rotation_y(pi<double> / 2.0);
+	constexpr Point expected{1.0, 0.0, 0.0};
+	ASSERT_EQUAL(expected, halfQuarter * point);
+}
+
+void testRotationAroundZAxisHalfQuarter() {
+	constexpr Point point{0.0, 1.0, 0.0};
+	constexpr auto halfQuarter = rotation_z(pi<double> / 4.0);
+	constexpr Point expected{-std::sqrt(2.0)/2.0, std::sqrt(2.0)/2.0, 0.0};
+	ASSERT_EQUAL(expected, halfQuarter * point);
+}
+
+void testRotationAroundZAxisQuarter() {
+	constexpr Point point{0.0, 1.0, 0.0};
+	constexpr auto halfQuarter = rotation_z(pi<double> / 2.0);
+	constexpr Point expected{-1.0, 0.0, 0.0};
+	ASSERT_EQUAL(expected, halfQuarter * point);
+}
+
 cute::suite make_suite_TransformationsTestSuite() {
 	cute::suite s { };
 	s.push_back(CUTE(testTranslationMatrix));
@@ -77,5 +131,12 @@ cute::suite make_suite_TransformationsTestSuite() {
 	s.push_back(CUTE(testScalingAppliedToPoint));
 	s.push_back(CUTE(testMultiplyInverseOfScaling));
 	s.push_back(CUTE(testReflectionScaling));
+	s.push_back(CUTE(testRotationAroundXAxisHalfQuarter));
+	s.push_back(CUTE(testRotationAroundXAxisQuarter));
+	s.push_back(CUTE(testInverseRotationAroundXAxisHalfQuarter));
+	s.push_back(CUTE(testRotationAroundYAxisHalfQuarter));
+	s.push_back(CUTE(testRotationAroundYAxisQuarter));
+	s.push_back(CUTE(testRotationAroundZAxisHalfQuarter));
+	s.push_back(CUTE(testRotationAroundZAxisQuarter));
 	return s;
 }

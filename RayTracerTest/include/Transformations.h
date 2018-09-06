@@ -5,7 +5,7 @@
 #include "Matrix.h"
 #include "Point.h"
 
-
+#include <cmath>
 
 template <typename T>
 constexpr auto translation(T const & x, T const & y, T const & z) {
@@ -48,6 +48,35 @@ constexpr auto scaling(T const & x, T const & y, T const & z) {
 	result[2_row, 2_column] = z;
 	return result;
 }
+
+
+template <typename T>
+constexpr auto rotation_x(T const & x) {
+	auto rotation = identity<4>;
+	rotation[1_row, 1_column] = rotation[2_row, 2_column] = std::cos(x);
+	rotation[1_row, 2_column] = -std::sin(x);
+	rotation[2_row, 1_column] = std::sin(x);
+	return rotation;
+}
+
+template <typename T>
+constexpr auto rotation_y(T const & x) {
+	auto rotation = identity<4>;
+	rotation[0_row, 0_column] = rotation[2_row, 2_column] = std::cos(x);
+	rotation[0_row, 2_column] = std::sin(x);
+	rotation[2_row, 0_column] = -std::sin(x);
+	return rotation;
+}
+
+template <typename T>
+constexpr auto rotation_z(T const & x) {
+	auto rotation = identity<4>;
+	rotation[0_row, 0_column] = rotation[1_row, 1_column] = std::cos(x);
+	rotation[0_row, 1_column] = -std::sin(x);
+	rotation[1_row, 0_column] = std::sin(x);
+	return rotation;
+}
+
 
 
 #endif /* TRANSFORMATIONS_H_ */
