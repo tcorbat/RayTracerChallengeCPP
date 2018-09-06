@@ -121,6 +121,48 @@ void testRotationAroundZAxisQuarter() {
 	ASSERT_EQUAL(expected, halfQuarter * point);
 }
 
+void testShearingXInProportionToY() {
+	constexpr auto transformation = shearing(1.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	constexpr Point point{2.0, 3.0, 4.0};
+	constexpr Point expected{5.0, 3.0, 4.0};
+	ASSERT_EQUAL(expected, transformation * point);
+}
+
+void testShearingXInProportionToZ() {
+	constexpr auto transformation = shearing(0.0, 1.0, 0.0, 0.0, 0.0, 0.0);
+	constexpr Point point{2.0, 3.0, 4.0};
+	constexpr Point expected{6.0, 3.0, 4.0};
+	ASSERT_EQUAL(expected, transformation * point);
+}
+
+void testShearingYInProportionToX() {
+	constexpr auto transformation = shearing(0.0, 0.0, 1.0, 0.0, 0.0, 0.0);
+	constexpr Point point{2.0, 3.0, 4.0};
+	constexpr Point expected{2.0, 5.0, 4.0};
+	ASSERT_EQUAL(expected, transformation * point);
+}
+
+void testShearingYInProportionToZ() {
+	constexpr auto transformation = shearing(0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+	constexpr Point point{2.0, 3.0, 4.0};
+	constexpr Point expected{2.0, 7.0, 4.0};
+	ASSERT_EQUAL(expected, transformation * point);
+}
+
+void testShearingZInProportionToX() {
+	constexpr auto transformation = shearing(0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	constexpr Point point{2.0, 3.0, 4.0};
+	constexpr Point expected{2.0, 3.0, 6.0};
+	ASSERT_EQUAL(expected, transformation * point);
+}
+
+void testShearingZInProportionToY() {
+	constexpr auto transformation = shearing(0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+	constexpr Point point{2.0, 3.0, 4.0};
+	constexpr Point expected{2.0, 3.0, 7.0};
+	ASSERT_EQUAL(expected, transformation * point);
+}
+
 cute::suite make_suite_TransformationsTestSuite() {
 	cute::suite s { };
 	s.push_back(CUTE(testTranslationMatrix));
@@ -138,5 +180,11 @@ cute::suite make_suite_TransformationsTestSuite() {
 	s.push_back(CUTE(testRotationAroundYAxisQuarter));
 	s.push_back(CUTE(testRotationAroundZAxisHalfQuarter));
 	s.push_back(CUTE(testRotationAroundZAxisQuarter));
+	s.push_back(CUTE(testShearingXInProportionToY));
+	s.push_back(CUTE(testShearingXInProportionToZ));
+	s.push_back(CUTE(testShearingYInProportionToX));
+	s.push_back(CUTE(testShearingYInProportionToZ));
+	s.push_back(CUTE(testShearingZInProportionToX));
+	s.push_back(CUTE(testShearingZInProportionToY));
 	return s;
 }

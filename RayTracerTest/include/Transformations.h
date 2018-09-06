@@ -77,6 +77,17 @@ constexpr auto rotation_z(T const & x) {
 	return rotation;
 }
 
+template <typename T>
+constexpr auto shearing(T const & xToY, T const & xToZ, T const & yToX, T const & yToZ, T const & zToX, T const & zToY) {
+	auto shear = identity<4>;
+	shear[0_row, 1_column] = xToY;
+	shear[0_row, 2_column] = xToZ;
+	shear[1_row, 0_column] = yToX;
+	shear[1_row, 2_column] = yToZ;
+	shear[2_row, 0_column] = zToX;
+	shear[2_row, 1_column] = zToY;
+	return shear;
+}
 
 
 #endif /* TRANSFORMATIONS_H_ */
