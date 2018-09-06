@@ -60,6 +60,12 @@ void testMultiplyInverseOfScaling() {
 	ASSERT_EQUAL(expected, inverse(transformation) * point);
 }
 
+void testReflectionScaling() {
+	constexpr auto transformation = scaling(-1.0, 1.0, 1.0);
+	constexpr Point point{2.0, 3.0, 4.0};
+	constexpr Point expected{-2.0, 3.0, 4.0};
+	ASSERT_EQUAL(expected, transformation * point);
+}
 
 cute::suite make_suite_TransformationsTestSuite() {
 	cute::suite s { };
@@ -70,5 +76,6 @@ cute::suite make_suite_TransformationsTestSuite() {
 	s.push_back(CUTE(testScalingMatrix));
 	s.push_back(CUTE(testScalingAppliedToPoint));
 	s.push_back(CUTE(testMultiplyInverseOfScaling));
+	s.push_back(CUTE(testReflectionScaling));
 	return s;
 }
