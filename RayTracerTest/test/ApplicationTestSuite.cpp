@@ -18,15 +18,16 @@ struct World {
 	Direction const wind;
 };
 
-Projectile tick(World const & world, Projectile projectile) {
-	projectile.location += projectile.velocity;
-	projectile.velocity += world.gravity + world.wind;
-	return projectile;
+Projectile tick(World const & world, Projectile const & projectile) {
+	return {
+		projectile.location + projectile.velocity,
+		projectile.velocity + world.gravity + world.wind
+	};
 }
 
 void testProjectileTrajectory() {
 	Projectile projectile{{0.0, 1.0, 0.0}, normalize({1.0, 1.0, 0.0})};
-	World const world{{0.0, -0.1, 0.0}, {-0.01, 0.0, 0.0}};
+	constexpr World world{{0.0, -0.1, 0.0}, {-0.01, 0.0, 0.0}};
 
 	std::vector<Point> const expected{
 		{0.0, 1.0, 0.0},
@@ -58,13 +59,13 @@ void testProjectileTrajectory() {
 }
 
 void testProjectileTraceOnCanvas() {
-	Color const projectileColor{0.25, 1.0, 0};
-	Point const startingPoint{0.0, 1.0, 0.0};
-	Direction const projectileVelocity = normalize({1, 1.8, 0}) * 11.25;
+	constexpr Color projectileColor{0.25, 1.0, 0};
+	constexpr Point startingPoint{0.0, 1.0, 0.0};
+	constexpr Direction projectileVelocity = normalize({1, 1.8, 0}) * 11.25;
 	Projectile projectile{startingPoint, projectileVelocity};
-	Direction const gravity{0.0, -0.1, 0.0};
-	Direction const wind{-0.01, 0, 0};
-	World const world{gravity, wind};
+	constexpr Direction gravity{0.0, -0.1, 0.0};
+	constexpr Direction wind{-0.01, 0, 0};
+	constexpr World world{gravity, wind};
 	Canvas traceCanvas{900_column, 550_row};
 	do {
 		traceCanvas[projectile.location] = projectileColor;

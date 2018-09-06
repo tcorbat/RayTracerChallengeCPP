@@ -3,17 +3,17 @@
 #include "cute.h"
 
 void testSimpleDirectionXComponent() {
-	Direction const d{4.3, -4.2, 3.1};
+	constexpr Direction d{4.3, -4.2, 3.1};
 	ASSERT_EQUAL(4.3, d.x);
 }
 
 void testSimpleDirectionYComponent(){
-	Direction const d{4.3, -4.2, 3.1};
+	constexpr Direction d{4.3, -4.2, 3.1};
 	ASSERT_EQUAL(-4.2, d.y);
 }
 
 void testSimpleDirectionZComponent(){
-	Direction const d{4.3, -4.2, 3.1};
+	constexpr Direction d{4.3, -4.2, 3.1};
 	ASSERT_EQUAL(3.1, d.z);
 }
 

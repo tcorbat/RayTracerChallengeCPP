@@ -15,91 +15,91 @@ void testDefaultColorBlueComponent() {
 }
 
 void testSimpleColorRedComponent() {
-	Color const c{-0.5, 0.4, 1.7};
+	constexpr Color c{-0.5, 0.4, 1.7};
 	ASSERT_EQUAL(-0.5, c.red);
 }
 
 void testSimpleColorGreenComponent() {
-	Color const c{-0.5, 0.4, 1.7};
+	constexpr Color c{-0.5, 0.4, 1.7};
 	ASSERT_EQUAL(0.4, c.green);
 }
 
 void testSimpleColorBlueComponent() {
-	Color const c{-0.5, 0.4, 1.7};
+	constexpr Color c{-0.5, 0.4, 1.7};
 	ASSERT_EQUAL(1.7, c.blue);
 }
 
 void testColorIsEqualToItself() {
-	Color const c{0.9, 0.6, 0.75};
+	constexpr Color c{0.9, 0.6, 0.75};
 	ASSERT_EQUAL(c, c);
 }
 
 void testColorIsNotEqualToDifferentColor() {
-	Color const c1{0.9, 0.6, 0.75};
-	Color const c2{0.7, 0.1, 0.25};
+	constexpr Color c1{0.9, 0.6, 0.75};
+	constexpr Color c2{0.7, 0.1, 0.25};
 	ASSERT_NOT_EQUAL_TO(c1, c2);
 }
 
 void testAddColorToColor() {
 	Color c1{0.9, 0.6, 0.75};
-	Color const c2{0.7, 0.1, 0.25};
-	Color const expected{1.6, 0.7, 1.0};
+	constexpr Color c2{0.7, 0.1, 0.25};
+	constexpr Color expected{1.6, 0.7, 1.0};
 	c1 += c2;
 	ASSERT_EQUAL(expected, c1);
 }
 
 void testAddColors() {
-	Color const c1{0.9, 0.6, 0.75};
-	Color const c2{0.7, 0.1, 0.25};
-	Color const expected{1.6, 0.7, 1.0};
+	constexpr Color c1{0.9, 0.6, 0.75};
+	constexpr Color c2{0.7, 0.1, 0.25};
+	constexpr Color expected{1.6, 0.7, 1.0};
 	ASSERT_EQUAL(expected, c1 + c2);
 }
 
 void testNegateColor() {
-	Color const c{0.9, 0.6, -0.75};
-	Color const expected{-0.9, -0.6, 0.75};
+	constexpr Color c{0.9, 0.6, -0.75};
+	constexpr Color expected{-0.9, -0.6, 0.75};
 	ASSERT_EQUAL(expected, -c);
 }
 
 void testSubtractColorFromColor() {
 	Color c1{0.9, 0.6, 0.75};
-	Color const c2{0.7, 0.1, 0.25};
-	Color const expected{0.2, 0.5, 0.5};
+	constexpr Color c2{0.7, 0.1, 0.25};
+	constexpr Color expected{0.2, 0.5, 0.5};
 	c1 -= c2;
 	ASSERT_EQUAL(expected, c1);
 }
 
 void testSubtractTwoColors() {
 	Color c1{0.9, 0.6, 0.75};
-	Color const c2{0.7, 0.1, 0.25};
-	Color const expected{0.2, 0.5, 0.5};
+	constexpr Color c2{0.7, 0.1, 0.25};
+	constexpr Color expected{0.2, 0.5, 0.5};
 	ASSERT_EQUAL(expected, c1 - c2);
 }
 
 void testMutiplyColorByScalar() {
-	Color const color{0.9, 0.6, 0.75};
-	Color const expected{0.45, 0.3, 0.375};
+	constexpr Color color{0.9, 0.6, 0.75};
+	constexpr Color expected{0.45, 0.3, 0.375};
 	ASSERT_EQUAL(expected, color * 0.5);
 }
 
 void testMutiplyScalarByColor() {
-	Color const color{0.9, 0.6, 0.75};
-	Color const expected{0.45, 0.3, 0.375};
+	constexpr Color color{0.9, 0.6, 0.75};
+	constexpr Color expected{0.45, 0.3, 0.375};
 	ASSERT_EQUAL(expected, 0.5 * color);
 }
 
 void testHadamardProductWithColor() {
 	Color c1{0.9, 0.6, 0.75};
-	Color const c2{0.7, 0.1, 0.25};
+	constexpr Color c2{0.7, 0.1, 0.25};
 	c1 *= c2;
-	Color const expected{0.63, 0.06, 0.1875};
+	constexpr Color expected{0.63, 0.06, 0.1875};
 	ASSERT_EQUAL(expected, c1);
 }
 
 void testHadamardProductOfColors() {
-	Color const c1{0.9, 0.6, 0.75};
-	Color const c2{0.7, 0.1, 0.25};
-	Color const expected{0.63, 0.06, 0.1875};
+	constexpr Color c1{0.9, 0.6, 0.75};
+	constexpr Color c2{0.7, 0.1, 0.25};
+	constexpr Color expected{0.63, 0.06, 0.1875};
 	ASSERT_EQUAL(expected, c1 * c2);
 }
 

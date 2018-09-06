@@ -7,7 +7,7 @@
 
 void testCanvasIsInitiallyBlack() {
 	Canvas const canvas{20_column, 10_row};
-	Color const black{};
+	constexpr Color black{};
 
 	forEachIndex(canvas, [&](CanvasIndex const & index) {
 			Color const cellColor = canvas[index];
@@ -17,7 +17,7 @@ void testCanvasIsInitiallyBlack() {
 
 void testSetPixelColorToRed() {
 	Canvas canvas{20_column, 10_row};
-	Color const red{1.0, 0.0, 0.0};
+	constexpr Color red{1.0, 0.0, 0.0};
 
 	canvas[3_column, 2_row] = red;
 	Color const targetCellColor = canvas[3_column, 2_row];
@@ -74,7 +74,7 @@ void testPrintPixelsWithMaxSeventyWidth() {
 		"255 204 153 255 204 153 255 204 153 255 204 153 255 204 153\n"
 		"255 204 153 255 204 153 255 204 153 255 204 153 255 204 153\n"
 	};
-	Color const navajoWhite{1.0, 0.8, 0.6};
+	constexpr Color navajoWhite{1.0, 0.8, 0.6};
 	Canvas canvas{10_column, 2_row};
 	forEachIndex(canvas, [&] (CanvasIndex const & index) {
 		canvas[index] = navajoWhite;
