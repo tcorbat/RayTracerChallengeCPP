@@ -3,11 +3,11 @@
 
 #include "Coordinate.h"
 #include "Direction.h"
+#include "Operators.h"
 
-#include <boost/operators.hpp>
 #include <ostream>
 
-struct Point : Coordinate<Point>, boost::addable<Point, Direction>, boost::subtractable<Point, Direction> {
+struct Point : Coordinate<Point>, operators::addable<Point, Direction>, operators::subtractable<Point, Direction> {
 	using Coordinate<Point>::Coordinate;
 };
 

@@ -10,6 +10,7 @@
 #include "ColorTestSuite.h"
 #include "CanvasTestSuite.h"
 #include "MatrixTestSuite.h"
+#include "RayTestSuite.h"
 #include "TransformationsTestSuite.h"
 
 
@@ -29,8 +30,8 @@ bool runAllTests(int argc, char const *argv[]) {
 	cute::suite OperationsTestSuite = make_suite_OperationsTestSuite();
 	success &= runner(OperationsTestSuite, "Operations Test Suite");
 
-	cute::suite Application = make_suite_ApplicationTestSuite();
-	success &= runner(Application, "Application Test Suite");
+	cute::suite ApplicationTestSuite = make_suite_ApplicationTestSuite();
+	success &= runner(ApplicationTestSuite, "Application Test Suite");
 
 	cute::suite ColorTestSuite = make_suite_ColorTestSuite();
 	success &= runner(ColorTestSuite, "Color Test Suite");
@@ -43,6 +44,9 @@ bool runAllTests(int argc, char const *argv[]) {
 
 	cute::suite TransformationsTestSuite = make_suite_TransformationsTestSuite();
 	success &= runner(TransformationsTestSuite, "Transformations Test Suite");
+
+	cute::suite RayTestSuite = make_suite_RayTestSuite();
+	success &= runner(RayTestSuite, "Ray Test Suite");
 	return success;
 }
 

@@ -2,64 +2,12 @@
 #define DIRECTION_H_
 
 #include "Coordinate.h"
+#include "Operators.h"
 
-#include <boost/operators.hpp>
 #include <ostream>
 #include <stdexcept>
 
-namespace operators {
 
-template <typename T, typename U = T>
-struct addable {
-	constexpr friend auto operator+(T lhs, U const & rhs) {
-		return lhs += rhs;
-	}
-
-	constexpr friend auto operator+(U const & lhs, T rhs) {
-		return rhs += lhs;
-	}
-};
-
-template <typename T>
-struct addable<T, T> {
-	constexpr friend auto operator+(T lhs, T const & rhs) {
-		return lhs += rhs;
-	}
-};
-
-template <typename T, typename U = T>
-struct subtractable {
-	constexpr friend auto operator-(T lhs, U const & rhs) {
-		return lhs -= rhs;
-	}
-};
-
-template <typename T, typename U = T>
-struct multipliable {
-	constexpr friend auto operator*(T lhs, U const & rhs) {
-		return lhs *= rhs;
-	}
-
-	constexpr friend auto operator*(U const & lhs, T rhs) {
-		return rhs *= lhs;
-	}
-};
-
-template <typename T>
-struct multipliable<T, T> {
-	constexpr friend auto operator*(T lhs, T const & rhs) {
-		return lhs *= rhs;
-	}
-};
-
-template <typename T, typename U = T>
-struct dividable {
-	constexpr friend auto operator/(T lhs, U const & rhs) {
-		return lhs /= rhs;
-	}
-};
-
-}
 
 struct Direction : Coordinate<Direction>, operators::addable<Direction>, operators::subtractable<Direction>, operators::multipliable<Direction, double>, operators::dividable<Direction, double> {
 	using Coordinate<Direction>::Coordinate;
