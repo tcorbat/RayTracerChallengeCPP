@@ -9,9 +9,9 @@
 #include <array>
 #include <cmath>
 #include <cstddef>
+#include <optional>
 #include <stdexcept>
 #include <variant>
-
 
 struct Ray {
 	Point const origin;
@@ -87,12 +87,31 @@ constexpr IntersectionResult intersect(Shape const & shape, Ray const & ray) {
 	}
 }
 
-template <typename...Shapes>
-using Intersections = std::array<Intersection, sizeof...(Shapes)>;
+template <typename...Inter>
+using Intersections = std::array<Intersection, sizeof...(Inter)>;
 
-template <typename...Shapes>
-constexpr Intersections<Shapes...> intersections(Shapes const &...shapes) {
-	return {shapes...};
+template <typename...Inter>
+constexpr Intersections<Inter...> intersections(Inter const &...inters) {
+	return {inters...};
+}
+
+template <std::size_t N>
+constexpr std::optional<Intersection> hit(std::array<Intersection, N> const & inters) {
+	constexpr auto kNoHitIndex = -1;
+	auto minIndex = kNoHitIndex;
+	for (auto index = 0; index < static_cast<decltype(kNoHitIndex)>(inters.size()); ++index) {
+		auto const & current = inters[index];
+		if (current.time >= 0.0) {
+			if (minIndex == kNoHitIndex || inters[minIndex].time > current.time) {
+				minIndex = index;
+			}
+		}
+	}
+	if (minIndex == kNoHitIndex) {
+		return {};
+	} else {
+		return inters[minIndex];
+	}
 }
 
 

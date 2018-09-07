@@ -91,6 +91,46 @@ void testIntersectObjectContent() {
 	ASSERT_EQUAL(std::tie(sphere, sphere), std::tie(std::get<Sphere>(inters[0].object), std::get<Sphere>(inters[1].object)));
 }
 
+void testHitWithPositiveTime() {
+	constexpr Sphere sphere{};
+	constexpr Intersection i1{1.0, sphere};
+	constexpr Intersection i2{2.0, sphere};
+	constexpr auto inters = intersections(i1, i2);
+	constexpr auto result = hit(inters);
+	ASSERT_EQUAL(i1, result.value());
+}
+
+void testHitWithMixedTime() {
+	constexpr Sphere sphere{};
+	constexpr Intersection i1{-1.0, sphere};
+	constexpr Intersection i2{1.0, sphere};
+	constexpr auto inters = intersections(i1, i2);
+	constexpr auto result = hit(inters);
+	ASSERT_EQUAL(i2, result.value());
+}
+
+void testHitWithNegativeTime() {
+	constexpr Sphere sphere{};
+	constexpr Intersection i1{-2.0, sphere};
+	constexpr Intersection i2{-1.0, sphere};
+	constexpr auto inters = intersections(i1, i2);
+	constexpr auto result = hit(inters);
+	ASSERT(!result);
+}
+
+void testHitReturnsLowestNonNegativeTime() {
+	constexpr Sphere sphere{};
+	constexpr Intersection i1{5.0, sphere};
+	constexpr Intersection i2{7.0, sphere};
+	constexpr Intersection i3{-3.0, sphere};
+	constexpr Intersection i4{2.0, sphere};
+	constexpr auto inters = intersections(i1, i2, i3, i4);
+	constexpr auto result = hit(inters);
+	ASSERT_EQUAL(i4, result.value());
+}
+
+
+
 cute::suite make_suite_RayTestSuite() {
 	cute::suite s { };
 	s.push_back(CUTE(testPropertiesOfRay));
@@ -102,5 +142,9 @@ cute::suite make_suite_RayTestSuite() {
 	s.push_back(CUTE(testRayOriginsBeyonSphere));
 	s.push_back(CUTE(testIntersectionsStructure));
 	s.push_back(CUTE(testIntersectObjectContent));
+	s.push_back(CUTE(testHitWithPositiveTime));
+	s.push_back(CUTE(testHitWithMixedTime));
+	s.push_back(CUTE(testHitWithNegativeTime));
+	s.push_back(CUTE(testHitReturnsLowestNonNegativeTime));
 	return s;
 }
