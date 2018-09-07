@@ -21,7 +21,7 @@ bool runAllTests(int argc, char const *argv[]) {
 	auto const runner = cute::makeRunner(lis, argc, argv);
 	bool success = runner(s, "AllTests");
 	cute::suite PointTestSuite = make_suite_PointTestSuite();
-	success &= runner(PointTestSuite, "Point Test Sute");
+	success &= runner(PointTestSuite, "Point Test Suite");
 
 	cute::suite DirectionTestSuite = make_suite_DirectionTestSuite();
 	success &= runner(DirectionTestSuite, "Direction Test Suite");
@@ -33,16 +33,16 @@ bool runAllTests(int argc, char const *argv[]) {
 	success &= runner(Application, "Application Test Suite");
 
 	cute::suite ColorTestSuite = make_suite_ColorTestSuite();
-	success &= runner(ColorTestSuite, "ColorTestSuite");
+	success &= runner(ColorTestSuite, "Color Test Suite");
 
 	cute::suite CanvasTestSuite = make_suite_CanvasTestSuite();
-	success &= runner(CanvasTestSuite, "CanvasTestSuite");
+	success &= runner(CanvasTestSuite, "Canvas Test Suite");
 
 	cute::suite MatrixTestSuite = make_suite_MatrixTestSuite();
-	success &= runner(MatrixTestSuite, "MatrixTestSuite");
+	success &= runner(MatrixTestSuite, "Matrix Test Suite");
 
 	cute::suite TransformationsTestSuite = make_suite_TransformationsTestSuite();
-	success &= runner(TransformationsTestSuite, "TransformationsTestSuite");
+	success &= runner(TransformationsTestSuite, "Transformations Test Suite");
 	return success;
 }
 
