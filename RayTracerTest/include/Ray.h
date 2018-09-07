@@ -10,7 +10,7 @@
 #include <cmath>
 #include <cstddef>
 #include <stdexcept>
-
+#include <variant>
 
 
 struct Ray {
@@ -25,22 +25,37 @@ constexpr Point position(Ray const ray, double const time) {
 
 
 struct Intersection : operators::equality_comparable<Intersection> {
-	std::array<double, 2> const times{};
+	double const time{};
+	std::variant<Shapes::Sphere> const object{};
+
+	constexpr Intersection() = default;
+	template <typename Shape>
+	constexpr Intersection(double const time, Shape const & shape) :
+			time{time}, object{shape}{}
+
+	constexpr bool operator==(Intersection const & other) const {
+		return time == other.time && object == other.object;
+	}
+};
+
+struct IntersectionResult : operators::equality_comparable<IntersectionResult> {
+	std::array<Intersection, 2> const times{};
 	std::size_t const count{};
 	
-	constexpr Intersection() = default;
-	constexpr Intersection(double const first, double const second) :
-			times { first, second }, count { 2 } {
+	constexpr IntersectionResult() = default;
+	template <typename Shape>
+	constexpr IntersectionResult(Shape const & shape, double const first, double const second) :
+			times { Intersection{first, shape}, Intersection{second, shape} }, count { 2u } {
 	}
 	
-	constexpr double operator[](std::size_t const index) const {
+	constexpr Intersection operator[](std::size_t const index) const {
 		if (index >= count) {
 			throw std::invalid_argument{"Invalid intersection index"};
 		}
 		return times[index];
 	}
 
-	constexpr bool operator==(Intersection const & other) const {
+	constexpr bool operator==(IntersectionResult const & other) const {
 		return count == other.count && times == other.times;
 	}
 };
@@ -54,7 +69,7 @@ constexpr double discriminant(Shapes::Sphere const & sphere, Ray const & ray) {
 }
 
 template <typename Shape>
-constexpr Intersection intersect(Shape const & shape, Ray const & ray) {
+constexpr IntersectionResult intersect(Shape const & shape, Ray const & ray) {
 	auto const shapeToRay = ray.origin - shape.position;
 	auto const a = dot(ray.direction, ray.direction);
 	auto const b = 2 * dot(ray.direction, shapeToRay);
@@ -66,12 +81,19 @@ constexpr Intersection intersect(Shape const & shape, Ray const & ray) {
 	auto  t1 = (-b - std::sqrt(discriminant)) / (2 * a);
 	auto const t2 = (-b + std::sqrt(discriminant)) / (2 * a);
 	if (t1 > t2) {
-		return {t2, t1};
+		return {shape, t2, t1};
 	} else {
-		return {t1, t2};
+		return {shape, t1, t2};
 	}
 }
 
+template <typename...Shapes>
+using Intersections = std::array<Intersection, sizeof...(Shapes)>;
+
+template <typename...Shapes>
+constexpr Intersections<Shapes...> intersections(Shapes const &...shapes) {
+	return {shapes...};
+}
 
 
 #endif /* RAY_H_ */

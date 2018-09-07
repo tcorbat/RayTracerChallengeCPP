@@ -38,7 +38,7 @@ void testRayPosition() {
 void testRayIntersectionWithSphere() {
 	constexpr Ray ray{{0.0, 0.0, -5.0}, {0.0, 0.0, 1.0}};
 	constexpr Sphere sphere{};
-	constexpr Intersection expected{4.0, 6.0};
+	constexpr IntersectionResult expected{sphere, 4.0, 6.0};
 	constexpr auto intersections = intersect(sphere, ray);
 	ASSERT_EQUAL(expected, intersections);
 }
@@ -46,7 +46,7 @@ void testRayIntersectionWithSphere() {
 void testRayTouchesSphere() {
 	constexpr Ray ray{{0.0, 1.0, -5.0}, {0.0, 0.0, 1.0}};
 	constexpr Sphere sphere{};
-	constexpr Intersection expected{5.0, 5.0};
+	constexpr IntersectionResult expected{sphere, 5.0, 5.0};
 	constexpr auto intersections = intersect(sphere, ray);
 	ASSERT_EQUAL(expected, intersections);
 }
@@ -54,7 +54,7 @@ void testRayTouchesSphere() {
 void testRayMissesSphere() {
 	constexpr Ray ray{{0.0, 2.0, -5.0}, {0.0, 0.0, 1.0}};
 	constexpr Sphere sphere{};
-	constexpr Intersection expected{};
+	constexpr IntersectionResult expected{};
 	constexpr auto intersections = intersect(sphere, ray);
 	ASSERT_EQUAL(expected, intersections);
 }
@@ -62,7 +62,7 @@ void testRayMissesSphere() {
 void testRayOriginsInSphere() {
 	constexpr Ray ray{{0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}};
 	constexpr Sphere sphere{};
-	constexpr Intersection expected{-1.0, 1.0};
+	constexpr IntersectionResult expected{sphere, -1.0, 1.0};
 	constexpr auto intersections = intersect(sphere, ray);
 	ASSERT_EQUAL(expected, intersections);
 }
@@ -70,9 +70,25 @@ void testRayOriginsInSphere() {
 void testRayOriginsBeyonSphere() {
 	constexpr Ray ray{{0.0, 0.0, 5.0}, {0.0, 0.0, 1.0}};
 	constexpr Sphere sphere{};
-	constexpr Intersection expected{-6.0, -4.0};
+	constexpr IntersectionResult expected{sphere, -6.0, -4.0};
 	constexpr auto intersections = intersect(sphere, ray);
 	ASSERT_EQUAL(expected, intersections);
+}
+
+void testIntersectionsStructure() {
+	constexpr Sphere sphere{};
+	constexpr Intersection i1{1.0, sphere};
+	constexpr Intersection i2{2.0, sphere};
+	constexpr auto intersects = intersections(i1, i2);
+	constexpr Intersections<Sphere, Sphere> expected{i1, i2};
+	ASSERT_EQUAL(expected, intersects);
+}
+
+void testIntersectObjectContent() {
+	constexpr Ray ray{{0.0, 0.0, -5.0}, {0.0, 0.0, 1.0}};
+	constexpr Sphere sphere{};
+	constexpr auto inters = intersect(sphere, ray);
+	ASSERT_EQUAL(std::tie(sphere, sphere), std::tie(std::get<Sphere>(inters[0].object), std::get<Sphere>(inters[1].object)));
 }
 
 cute::suite make_suite_RayTestSuite() {
@@ -84,5 +100,7 @@ cute::suite make_suite_RayTestSuite() {
 	s.push_back(CUTE(testRayMissesSphere));
 	s.push_back(CUTE(testRayOriginsInSphere));
 	s.push_back(CUTE(testRayOriginsBeyonSphere));
+	s.push_back(CUTE(testIntersectionsStructure));
+	s.push_back(CUTE(testIntersectObjectContent));
 	return s;
 }

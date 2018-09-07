@@ -2,13 +2,17 @@
 #define SPHERE_H_
 
 #include "Point.h"
+#include "Operators.h"
 
 namespace Shapes {
 
-struct Sphere {
+struct Sphere : operators::equality_comparable<Sphere> {
 
 	Point const position;
 
+	constexpr bool operator==(Sphere const & other) const {
+		return position == other.position;
+	}
 };
 
 }
