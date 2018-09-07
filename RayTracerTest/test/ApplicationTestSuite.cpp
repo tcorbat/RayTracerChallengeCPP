@@ -1,8 +1,10 @@
 #include "ApplicationTestSuite.h"
 
-#include "Point.h"
-#include "Direction.h"
 #include "Canvas.h"
+#include "Direction.h"
+#include "Pi.h"
+#include "Point.h"
+#include "Transformations.h"
 #include "cute.h"
 
 #include <vector>
@@ -77,9 +79,25 @@ void testProjectileTraceOnCanvas() {
 	ASSERT(outputFile);
 }
 
+void testClockWithRotation() {
+	constexpr Color clockDotColor{1.0, 1.0, 1.0};
+	constexpr Point startingPoint{0.0, 1.0, 0.0};
+	Canvas clockCanvas{300_column, 300_row};
+	for (auto angle = 0.0; angle < 2 * pi<double>; angle += 2 * pi<double> / 12) {
+		auto const scaledPoint = scaling(0.0, 100.0, 0.0) * startingPoint;
+		auto const rotatedPoint = rotation_z(angle) * scaledPoint;
+		auto const translatedPoint = translation(150.0, 150.0, 0.0) * rotatedPoint;
+		clockCanvas[translatedPoint] = clockDotColor;
+	}
+	std::ofstream outputFile{"clock.ppm"};
+	printPPM(outputFile, clockCanvas);
+	ASSERT(outputFile);
+}
+
 cute::suite make_suite_ApplicationTestSuite() {
 	cute::suite s { };
 	s.push_back(CUTE(testProjectileTrajectory));
 	s.push_back(CUTE(testProjectileTraceOnCanvas));
+	s.push_back(CUTE(testClockWithRotation));
 	return s;
 }

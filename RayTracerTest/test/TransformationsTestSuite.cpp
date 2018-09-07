@@ -1,12 +1,10 @@
 #include "TransformationsTestSuite.h"
 #include "Transformations.h"
+#include "Pi.h"
 #include "cute.h"
 
-#include <boost/math/constants/constants.hpp>
 #include <cmath>
 
-template <typename T>
-constexpr auto pi = boost::math::constants::pi<double>();
 
 
 void testTranslationMatrix() {
@@ -163,6 +161,17 @@ void testShearingZInProportionToY() {
 	ASSERT_EQUAL(expected, transformation * point);
 }
 
+void testChainingTransformations() {
+	constexpr auto A = rotation_x(pi<double> / 2.0);
+	constexpr auto B = scaling(5.0, 5.0, 5.0);
+	constexpr auto C = translation(10.0, 5.0, 7.0);
+	constexpr Point initial{1.0, 0.0, 1.0};
+	constexpr auto afterA = A * initial;
+	constexpr auto afterB = B * afterA;
+	constexpr auto afterC = C * afterB;
+	ASSERT_EQUAL(afterC, C * B * A * initial);
+}
+
 cute::suite make_suite_TransformationsTestSuite() {
 	cute::suite s { };
 	s.push_back(CUTE(testTranslationMatrix));
@@ -186,5 +195,6 @@ cute::suite make_suite_TransformationsTestSuite() {
 	s.push_back(CUTE(testShearingYInProportionToZ));
 	s.push_back(CUTE(testShearingZInProportionToX));
 	s.push_back(CUTE(testShearingZInProportionToY));
+	s.push_back(CUTE(testChainingTransformations));
 	return s;
 }
