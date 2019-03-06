@@ -173,9 +173,9 @@ void testChainingTransformations() {
 }
 
 void testTranslatingARay() {
-	constexpr Ray expected{{4, 6, 8}, {0, 1, 0}};
+	constexpr auto expected = Ray::create({4, 6, 8}, {0, 1, 0});
 
-	constexpr Ray ray{{1, 2, 3}, {0, 1, 0}};
+	constexpr auto ray = Ray::create({1, 2, 3}, {0, 1, 0});
 	constexpr auto matrix = translation(3, 4, 5);
 
 	constexpr Ray result = transform(ray, matrix);
@@ -183,9 +183,9 @@ void testTranslatingARay() {
 }
 
 void testScalingARay() {
-	constexpr Ray expected{{2, 6, 12}, {0, 3, 0}};
+	constexpr Ray expected = Ray::create({2, 6, 12}, {0, 3, 0});
 
-	constexpr Ray ray{{1, 2, 3}, {0, 1, 0}};
+	constexpr Ray ray = Ray::create({1, 2, 3}, {0, 1, 0});
 	constexpr auto matrix = scaling(2, 3, 4);
 
 	constexpr Ray result = transform(ray, matrix);

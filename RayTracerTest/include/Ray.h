@@ -14,7 +14,9 @@
 #include <stdexcept>
 #include <variant>
 
-struct Ray {
+#include <boost/operators.hpp>
+
+struct Ray : boost::equality_comparable<Ray> {
 	Point const origin;
 	Direction const direction;
 
@@ -22,8 +24,8 @@ struct Ray {
 		return origin == other.origin && direction == other.direction;
 	}
 
-	constexpr bool operator!=(Ray const & other) const {
-		return !(*this == other);
+	constexpr static Ray create(Point point, Direction direction) {
+		return Ray{{}, point, direction};
 	}
 };
 
