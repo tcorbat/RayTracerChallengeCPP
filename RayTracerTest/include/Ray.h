@@ -10,14 +10,26 @@
 #include <cmath>
 #include <cstddef>
 #include <optional>
+#include <ostream>
 #include <stdexcept>
 #include <variant>
 
 struct Ray {
 	Point const origin;
 	Direction const direction;
+
+	constexpr bool operator==(Ray const & other) const {
+		return origin == other.origin && direction == other.direction;
+	}
+
+	constexpr bool operator!=(Ray const & other) const {
+		return !(*this == other);
+	}
 };
 
+inline std::ostream & operator<<(std::ostream & out, Ray const & ray) {
+	return out << "Ray{" << ray.origin << "} {" << ray.direction << '}';
+}
 
 constexpr Point position(Ray const ray, double const time) {
 	return ray.origin + ray.direction * time;

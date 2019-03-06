@@ -4,6 +4,7 @@
 
 #include "Matrix.h"
 #include "Point.h"
+#include "Ray.h"
 
 #include <cmath>
 
@@ -14,6 +15,11 @@ constexpr auto translation(T const & x, T const & y, T const & z) {
 	result[1_row, 3_column] = y;
 	result[2_row, 3_column] = z;
 	return result;
+}
+
+template<typename ValueType = double>
+constexpr auto transform(Ray const & ray, Matrix<4, 4, ValueType> const & matrix) {
+	return Ray{matrix * ray.origin, matrix * ray.direction};
 }
 
 namespace {

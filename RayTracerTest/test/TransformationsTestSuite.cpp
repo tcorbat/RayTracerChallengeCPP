@@ -172,6 +172,26 @@ void testChainingTransformations() {
 	ASSERT_EQUAL(afterC, C * B * A * initial);
 }
 
+void testTranslatingARay() {
+	constexpr Ray expected{{4, 6, 8}, {0, 1, 0}};
+
+	constexpr Ray ray{{1, 2, 3}, {0, 1, 0}};
+	constexpr auto matrix = translation(3, 4, 5);
+
+	constexpr Ray result = transform(ray, matrix);
+	ASSERT_EQUAL(expected, result);
+}
+
+void testScalingARay() {
+	constexpr Ray expected{{2, 6, 12}, {0, 3, 0}};
+
+	constexpr Ray ray{{1, 2, 3}, {0, 1, 0}};
+	constexpr auto matrix = scaling(2, 3, 4);
+
+	constexpr Ray result = transform(ray, matrix);
+	ASSERT_EQUAL(expected, result);
+}
+
 cute::suite make_suite_TransformationsTestSuite() {
 	cute::suite s { };
 	s.push_back(CUTE(testTranslationMatrix));
@@ -196,5 +216,7 @@ cute::suite make_suite_TransformationsTestSuite() {
 	s.push_back(CUTE(testShearingZInProportionToX));
 	s.push_back(CUTE(testShearingZInProportionToY));
 	s.push_back(CUTE(testChainingTransformations));
+	s.push_back(CUTE(testTranslatingARay));
+	s.push_back(CUTE(testScalingARay));
 	return s;
 }
