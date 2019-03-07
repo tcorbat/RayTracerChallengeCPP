@@ -69,8 +69,8 @@ struct equality_comparable {
 template <typename T>
 struct equality_comparable<T, T> {
 	constexpr friend bool operator!=(T const & lhs, T const & rhs) {
-			return !(lhs == rhs);
-		}
+		return !(lhs == rhs);
+	}
 };
 
 }

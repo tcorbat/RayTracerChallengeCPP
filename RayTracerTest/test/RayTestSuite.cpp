@@ -25,6 +25,12 @@ void testRayEquality() {
 	ASSERT_EQUAL(expected, ray);
 }
 
+void testRayInequality() {
+	constexpr auto first = Ray::create({1.0, 2.0, 3.0}, {4.0, 5.0, 6.0});
+	constexpr auto second = Ray::create({2.0, 2.0, 3.0}, {4.0, 5.0, 6.0});
+	ASSERT_NOT_EQUAL_TO(first, second);
+}
+
 struct {
 	double const time;
 	Point const expected;
@@ -155,5 +161,6 @@ cute::suite make_suite_RayTestSuite() {
 	s.push_back(CUTE(testHitWithNegativeTime));
 	s.push_back(CUTE(testHitReturnsLowestNonNegativeTime));
 	s.push_back(CUTE(testRayEquality));
+	s.push_back(CUTE(testRayInequality));
 	return s;
 }

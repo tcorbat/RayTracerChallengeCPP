@@ -14,9 +14,8 @@
 #include <stdexcept>
 #include <variant>
 
-#include <boost/operators.hpp>
 
-struct Ray : boost::equality_comparable<Ray> {
+struct Ray : operators::equality_comparable<Ray> {
 	Point const origin;
 	Direction const direction;
 
