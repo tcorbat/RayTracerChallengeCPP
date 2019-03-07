@@ -19,7 +19,7 @@ constexpr auto translation(T const & x, T const & y, T const & z) {
 
 template<typename ValueType = double>
 constexpr auto transform(Ray const & ray, Matrix<4, 4, ValueType> const & matrix) {
-	return Ray::create(matrix * ray.origin, matrix * ray.direction);
+	return Ray{matrix * ray.origin, matrix * ray.direction};
 }
 
 namespace {

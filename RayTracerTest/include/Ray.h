@@ -15,16 +15,15 @@
 #include <variant>
 
 
-struct Ray : operators::equality_comparable<Ray> {
+struct Ray : private operators::equality_comparable<Ray> {
 	Point const origin;
 	Direction const direction;
 
+	explicit constexpr Ray(Point const origin = {}, Direction const direction = {}) :
+			origin{origin}, direction{direction}{}
+
 	constexpr bool operator==(Ray const & other) const {
 		return origin == other.origin && direction == other.direction;
-	}
-
-	constexpr static Ray create(Point point, Direction direction) {
-		return Ray{{}, point, direction};
 	}
 };
 
