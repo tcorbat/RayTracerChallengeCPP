@@ -3,7 +3,7 @@
 #include "xml_listener.h"
 #include "cute_runner.h"
 
-#include "../test/PointTestSuite.h"
+#include "PointTestSuite.h"
 #include "ApplicationTestSuite.h"
 #include "DirectionTestSuite.h"
 #include "OperationsTestSuite.h"
@@ -11,6 +11,7 @@
 #include "CanvasTestSuite.h"
 #include "MatrixTestSuite.h"
 #include "RayTestSuite.h"
+#include "ShapesTestSuite.h"
 #include "TransformationsTestSuite.h"
 
 
@@ -21,32 +22,36 @@ bool runAllTests(int argc, char const *argv[]) {
 	cute::xml_listener<cute::ide_listener<>> lis(xmlfile.out);
 	auto const runner = cute::makeRunner(lis, argc, argv);
 	bool success = runner(s, "AllTests");
-	cute::suite PointTestSuite = make_suite_PointTestSuite();
-	success &= runner(PointTestSuite, "Point Test Suite");
+	auto pointTestSuite = make_suite_PointTestSuite();
+	success &= runner(pointTestSuite, "Point Test Suite");
 
-	cute::suite DirectionTestSuite = make_suite_DirectionTestSuite();
-	success &= runner(DirectionTestSuite, "Direction Test Suite");
+	auto directionTestSuite = make_suite_DirectionTestSuite();
+	success &= runner(directionTestSuite, "Direction Test Suite");
 
-	cute::suite OperationsTestSuite = make_suite_OperationsTestSuite();
-	success &= runner(OperationsTestSuite, "Operations Test Suite");
+	auto operationsTestSuite = make_suite_OperationsTestSuite();
+	success &= runner(operationsTestSuite, "Operations Test Suite");
 
-	cute::suite ApplicationTestSuite = make_suite_ApplicationTestSuite();
-	success &= runner(ApplicationTestSuite, "Application Test Suite");
+	auto applicationTestSuite = make_suite_ApplicationTestSuite();
+	success &= runner(applicationTestSuite, "Application Test Suite");
 
-	cute::suite ColorTestSuite = make_suite_ColorTestSuite();
-	success &= runner(ColorTestSuite, "Color Test Suite");
+	auto colorTestSuite = make_suite_ColorTestSuite();
+	success &= runner(colorTestSuite, "Color Test Suite");
 
-	cute::suite CanvasTestSuite = make_suite_CanvasTestSuite();
-	success &= runner(CanvasTestSuite, "Canvas Test Suite");
+	auto canvasTestSuite = make_suite_CanvasTestSuite();
+	success &= runner(canvasTestSuite, "Canvas Test Suite");
 
-	cute::suite MatrixTestSuite = make_suite_MatrixTestSuite();
-	success &= runner(MatrixTestSuite, "Matrix Test Suite");
+	auto matrixTestSuite = make_suite_MatrixTestSuite();
+	success &= runner(matrixTestSuite, "Matrix Test Suite");
 
-	cute::suite TransformationsTestSuite = make_suite_TransformationsTestSuite();
-	success &= runner(TransformationsTestSuite, "Transformations Test Suite");
+	auto transformationsTestSuite = make_suite_TransformationsTestSuite();
+	success &= runner(transformationsTestSuite, "Transformations Test Suite");
 
-	cute::suite RayTestSuite = make_suite_RayTestSuite();
-	success &= runner(RayTestSuite, "Ray Test Suite");
+	auto rayTestSuite = make_suite_RayTestSuite();
+	success &= runner(rayTestSuite, "Ray Test Suite");
+
+	auto shapesTestSuite = make_suite_ShapesTestSuite();
+	success &= runner(shapesTestSuite, "Shapes Test Suite");
+
 	return success;
 }
 
