@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <memory>
 #include <stdexcept>
+#include <sstream>
 
 
 
@@ -33,7 +34,9 @@ class Canvas {
 
 	void checkIndex(CanvasIndex const index) const {
 		if (index.row >= rows_ || index.column >= columns_) {
-			throw std::invalid_argument{"Canvas index is out of bound"};
+			std::ostringstream message{"Canvas index is out of bound "};
+			message << "access at row " << index.row << " and column " << index.column;
+			throw std::invalid_argument{message.str()};
 		}
 	}
 

@@ -94,10 +94,34 @@ void testClockWithRotation() {
 	ASSERT(outputFile);
 }
 
+void testRayHitsSphereCanvas() {
+	constexpr Color lightColor{1.0, 1.0, 0.5};
+	constexpr Shapes::Sphere sphere{{2.0, 1.5, -1.0}, scaling(10.0, 15.0, 10.0)};
+	constexpr Point startingPoint{50.0, 50.0, -50.0};
+	constexpr Point canvasTopLeft{0.0, 0.0, 0.0};
+	Canvas lightCanvas{100_column, 100_row};
+	for (auto row = 0_row; row < lightCanvas.rows(); row++) {
+		for (auto col = 0_column; col < lightCanvas.columns(); col++) {
+			double const columnOffset = col.value;
+			double const rowOffset = row.value;
+			Point const canvasPoint = canvasTopLeft + Direction{columnOffset, rowOffset, 0.0};
+			Ray const ray{startingPoint, normalize(canvasPoint - startingPoint)};
+			auto result = intersect(sphere, ray);
+			if (!result.count) {
+				lightCanvas[col, row] = lightColor;
+			}
+		}
+	}
+	std::ofstream outputFile{"sphere.ppm"};
+	printPPM(outputFile, lightCanvas);
+	ASSERT(outputFile);
+}
+
 cute::suite make_suite_ApplicationTestSuite() {
 	cute::suite s { };
 	s.push_back(CUTE(testProjectileTrajectory));
 	s.push_back(CUTE(testProjectileTraceOnCanvas));
 	s.push_back(CUTE(testClockWithRotation));
+	s.push_back(CUTE(testRayHitsSphereCanvas));
 	return s;
 }

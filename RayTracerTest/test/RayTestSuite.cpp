@@ -3,6 +3,7 @@
 #include "Direction.h"
 #include "Point.h"
 #include "Sphere.h"
+#include "Transformations.h"
 #include "cute.h"
 
 #include <tuple>
@@ -143,7 +144,19 @@ void testHitReturnsLowestNonNegativeTime() {
 	ASSERT_EQUAL(i4, result.value());
 }
 
+void testIntersetingAScaledSphereWithARay() {
+	constexpr Ray ray{{0, 0, -5}, {0, 0, 1}};
+	constexpr Sphere sphere{{}, scaling(2.0, 2.0, 2.0)};
+	constexpr auto intersectResult = intersect(sphere, ray);
+	ASSERT_EQUAL(std::make_tuple(2, 3.0, 7.0), std::tie(intersectResult.count, intersectResult[0].time, intersectResult[1].time));
+}
 
+void testIntersetingATranslatedSphereWithARay() {
+	constexpr Ray ray{{0, 0, -5}, {0, 0, 1}};
+	constexpr Sphere sphere{{}, translation(5.0, 0.0, 0.0)};
+	constexpr auto intersectResult = intersect(sphere, ray);
+	ASSERT_EQUAL(intersectResult.count, 0);
+}
 
 cute::suite make_suite_RayTestSuite() {
 	cute::suite s { };
@@ -162,5 +175,7 @@ cute::suite make_suite_RayTestSuite() {
 	s.push_back(CUTE(testHitReturnsLowestNonNegativeTime));
 	s.push_back(CUTE(testRayEquality));
 	s.push_back(CUTE(testRayInequality));
+	s.push_back(CUTE(testIntersetingAScaledSphereWithARay));
+	s.push_back(CUTE(testIntersetingATranslatedSphereWithARay));
 	return s;
 }

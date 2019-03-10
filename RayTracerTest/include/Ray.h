@@ -82,9 +82,10 @@ constexpr double discriminant(Shapes::Sphere const & sphere, Ray const & ray) {
 
 template <typename Shape>
 constexpr IntersectionResult intersect(Shape const & shape, Ray const & ray) {
-	auto const shapeToRay = ray.origin - shape.position;
-	auto const a = dot(ray.direction, ray.direction);
-	auto const b = 2 * dot(ray.direction, shapeToRay);
+	auto const transformedRay = transform(ray, inverse(shape.transform));
+	auto const shapeToRay = transformedRay.origin - shape.position;
+	auto const a = dot(transformedRay.direction, transformedRay.direction);
+	auto const b = 2 * dot(transformedRay.direction, shapeToRay);
 	auto const c = dot(shapeToRay, shapeToRay) - 1;
 	auto const discriminant = b * b - 4 * a * c;
 	if (discriminant < 0.0) {
