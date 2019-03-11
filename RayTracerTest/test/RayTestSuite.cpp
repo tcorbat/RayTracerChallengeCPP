@@ -46,7 +46,7 @@ struct {
 void testRayPosition() {
 	constexpr Ray ray{{ 2.0, 3.0, 4.0 }, { 1.0, 0.0, 0.0 }};
 	for (auto const & testEntry : rayPositions) {
-		ASSERT_EQUAL_DDT(testEntry.expected, position(ray, testEntry.time), testEntry.failure);
+		ASSERT_EQUAL_DDT(testEntry.expected, ray.position(testEntry.time), testEntry.failure);
 	}
 }
 

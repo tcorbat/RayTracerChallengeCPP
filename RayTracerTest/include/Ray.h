@@ -25,14 +25,19 @@ struct Ray : private operators::equality_comparable<Ray> {
 	constexpr bool operator==(Ray const & other) const {
 		return origin == other.origin && direction == other.direction;
 	}
+
+	constexpr Point position(double const time) const {
+		return origin + direction * time;
+	}
+
+	template<typename ValueType = double>
+	constexpr auto transform(Matrix<4, 4, ValueType> const & matrix) const {
+		return Ray{matrix * origin, matrix * direction};
+	}
 };
 
 inline std::ostream & operator<<(std::ostream & out, Ray const & ray) {
 	return out << "Ray{" << ray.origin << "} {" << ray.direction << '}';
-}
-
-constexpr Point position(Ray const ray, double const time) {
-	return ray.origin + ray.direction * time;
 }
 
 
@@ -82,7 +87,7 @@ constexpr double discriminant(Shapes::Sphere const & sphere, Ray const & ray) {
 
 template <typename Shape>
 constexpr IntersectionResult intersect(Shape const & shape, Ray const & ray) {
-	auto const transformedRay = transform(ray, inverse(shape.transform));
+	auto const transformedRay = ray.transform(inverse(shape.transform));
 	auto const shapeToRay = transformedRay.origin - shape.position;
 	auto const a = dot(transformedRay.direction, transformedRay.direction);
 	auto const b = 2 * dot(transformedRay.direction, shapeToRay);

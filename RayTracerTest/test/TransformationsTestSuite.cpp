@@ -178,7 +178,7 @@ void testTranslatingARay() {
 	constexpr Ray ray{{1, 2, 3}, {0, 1, 0}};
 	constexpr auto matrix = translation(3, 4, 5);
 
-	constexpr Ray result = transform(ray, matrix);
+	constexpr Ray result = ray.transform(matrix);
 	ASSERT_EQUAL(expected, result);
 }
 
@@ -188,7 +188,7 @@ void testScalingARay() {
 	constexpr Ray ray {{1, 2, 3}, {0, 1, 0}};
 	constexpr auto matrix = scaling(2, 3, 4);
 
-	constexpr Ray result = transform(ray, matrix);
+	constexpr Ray result = ray.transform(matrix);
 	ASSERT_EQUAL(expected, result);
 }
 

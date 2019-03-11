@@ -16,12 +16,6 @@ constexpr auto translation(T const & x, T const & y, T const & z) {
 	result[2_row, 3_column] = z;
 	return result;
 }
-
-template<typename ValueType = double>
-constexpr auto transform(Ray const & ray, Matrix<4, 4, ValueType> const & matrix) {
-	return Ray{matrix * ray.origin, matrix * ray.direction};
-}
-
 namespace {
 
 template <typename ValueType, typename Target>
