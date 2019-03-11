@@ -31,9 +31,6 @@ bool runAllTests(int argc, char const *argv[]) {
 	auto operationsTestSuite = make_suite_OperationsTestSuite();
 	success &= runner(operationsTestSuite, "Operations Test Suite");
 
-	auto applicationTestSuite = make_suite_ApplicationTestSuite();
-	success &= runner(applicationTestSuite, "Application Test Suite");
-
 	auto colorTestSuite = make_suite_ColorTestSuite();
 	success &= runner(colorTestSuite, "Color Test Suite");
 
@@ -51,6 +48,9 @@ bool runAllTests(int argc, char const *argv[]) {
 
 	auto shapesTestSuite = make_suite_ShapesTestSuite();
 	success &= runner(shapesTestSuite, "Shapes Test Suite");
+
+	auto applicationTestSuite = make_suite_ApplicationTestSuite();
+	success &= runner(applicationTestSuite, "Application Test Suite");
 
 	return success;
 }
