@@ -11,6 +11,9 @@
 
 #include <vector>
 #include <fstream>
+#include <string>
+
+std::string const outputDirectory{"TestResults/"};
 
 struct Projectile {
 	Point location;
@@ -76,7 +79,7 @@ void testProjectileTraceOnCanvas() {
 		projectile = tick(world, projectile);
 	} while(projectile.location.y > 0.0);
 
-	std::ofstream outputFile{"projectile.ppm"};
+	std::ofstream outputFile{outputDirectory + "projectile.ppm"};
 	printPPM(outputFile, traceCanvas);
 	ASSERT(outputFile);
 }
@@ -91,7 +94,7 @@ void testClockWithRotation() {
 		auto const translatedPoint = translation(150.0, 150.0, 0.0) * rotatedPoint;
 		clockCanvas[translatedPoint] = clockDotColor;
 	}
-	std::ofstream outputFile{"clock.ppm"};
+	std::ofstream outputFile{outputDirectory + "clock.ppm"};
 	printPPM(outputFile, clockCanvas);
 	ASSERT(outputFile);
 }
@@ -114,7 +117,7 @@ void testRayHitsSphereCanvas() {
 			}
 		}
 	}
-	std::ofstream outputFile{"sphere.ppm"};
+	std::ofstream outputFile{outputDirectory + "sphere.ppm"};
 	printPPM(outputFile, lightCanvas);
 	ASSERT(outputFile);
 }
