@@ -4,6 +4,8 @@
 #include "Matrix.h"
 #include "Operators.h"
 #include "Point.h"
+#include "Transformations.h"
+
 
 namespace Shapes {
 
@@ -19,6 +21,13 @@ struct Sphere : operators::equality_comparable<Sphere> {
 		return position == other.position;
 	}
 };
+
+constexpr Direction normalAt(Sphere const & sphere, Point const point) {
+	auto const objectPoint = inverse(sphere.transform) * point;
+	auto const objectNormal = objectPoint - Point{0, 0, 0};
+	auto const worldNormal = transpose(inverse(sphere.transform)) * objectNormal;
+	return normalize(worldNormal);
+}
 
 }
 
