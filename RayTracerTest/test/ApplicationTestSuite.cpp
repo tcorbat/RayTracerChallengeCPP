@@ -2,8 +2,10 @@
 
 #include "Canvas.h"
 #include "Direction.h"
+#include "Intersections.h"
 #include "Pi.h"
 #include "Point.h"
+#include "Sphere.h"
 #include "Transformations.h"
 #include "cute.h"
 
@@ -106,7 +108,7 @@ void testRayHitsSphereCanvas() {
 			double const rowOffset = row.value;
 			Point const canvasPoint = canvasTopLeft + Direction{columnOffset, rowOffset, 0.0};
 			Ray const ray{startingPoint, normalize(canvasPoint - startingPoint)};
-			auto result = intersect(sphere, ray);
+			auto const result = intersect(sphere, ray);
 			if (!result.count) {
 				lightCanvas[col, row] = lightColor;
 			}

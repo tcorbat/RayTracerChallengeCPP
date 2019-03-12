@@ -1,6 +1,7 @@
 #include "RayTestSuite.h"
 #include "Ray.h"
 #include "Direction.h"
+#include "Intersections.h"
 #include "Point.h"
 #include "Sphere.h"
 #include "Transformations.h"
