@@ -70,6 +70,20 @@ void testNormalOnTransformedSphere() {
 	ASSERT_EQUAL(expected, result);
 }
 
+void testDefaultMaterialOnSphere() {
+	constexpr Sphere sphere{};
+	ASSERT_EQUAL(defaultMaterial, sphere.material);
+}
+
+void testAssignmentOfpSphereMaterial() {
+	Sphere sphere{};
+	auto sphereMaterial = defaultMaterial;
+	sphereMaterial.ambient = 1.0;
+	sphere.material = sphereMaterial;
+	ASSERT_EQUAL(sphereMaterial, sphere.material);
+}
+
+
 
 cute::suite make_suite_ShapesTestSuite() {
 	cute::suite s { };
@@ -82,5 +96,7 @@ cute::suite make_suite_ShapesTestSuite() {
 	s.push_back(CUTE(testNormalIsNormalized));
 	s.push_back(CUTE(testNormalOnTranslatedSphere));
 	s.push_back(CUTE(testNormalOnTransformedSphere));
+	s.push_back(CUTE(testDefaultMaterialOnSphere));
+	s.push_back(CUTE(testAssignmentOfpSphereMaterial));
 	return s;
 }
