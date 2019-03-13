@@ -3,6 +3,7 @@
 #include "Canvas.h"
 #include "Direction.h"
 #include "Intersections.h"
+#include "Light.h"
 #include "Pi.h"
 #include "Point.h"
 #include "Sphere.h"
@@ -12,6 +13,8 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <tuple>
+#include <variant>
 
 std::string const outputDirectory{"TestResults/"};
 
@@ -122,11 +125,48 @@ void testRayHitsSphereCanvas() {
 	ASSERT(outputFile);
 }
 
+
+void testRayHitsSphereCanvasWithLighting() {
+	constexpr auto canvasHeight = 1000_row;
+	constexpr auto canvasWidth = 1000_column;
+	constexpr Point canvasTopLeft = {-3.0, -3.0, 0.0};
+	constexpr Point canvasBottomRight = {3.0, 3.0, 0.0};
+	constexpr Direction canvasPixelWidth = {(canvasBottomRight.x - canvasTopLeft.x) / canvasWidth.value, 0.0, 0.0};
+	constexpr Direction canvasPixelHeight = {0.0, (canvasBottomRight.y - canvasTopLeft.y) / canvasHeight.value, 0.0};
+	constexpr Light lightSource{{-10.0, -10.0, -10.0}, Colors::white};
+	constexpr Material sphereMaterial = [newMaterial = defaultMaterial]()mutable{newMaterial.color = {1.0, 0.2, 1.0}; return newMaterial;}();
+	constexpr Shapes::Sphere sphere{Point{0.0, 0.0, 0.0}, scaling(1.0, 1.0, 1.0), sphereMaterial};
+	constexpr Point startingPoint{0.0, 0.0, -5.0};
+	Canvas lightCanvas{canvasWidth, canvasHeight};
+	for (auto row = 0_row; row < lightCanvas.rows(); row++) {
+		for (auto col = 0_column; col < lightCanvas.columns(); col++) {
+			double const columnOffset = col.value;
+			double const rowOffset = row.value;
+			Point const canvasPoint = canvasTopLeft + columnOffset * canvasPixelWidth + rowOffset * canvasPixelHeight;
+			Ray const ray{startingPoint, normalize(canvasPoint - startingPoint)};
+			auto const result = intersect(sphere, ray);
+			auto const firstHit = hit(result.times, result.count);
+			if (firstHit) {
+				auto const hitPosition = ray.position(firstHit->time);
+				auto const hitSphere = std::get<Shapes::Sphere>(firstHit->object);
+				auto const normal = normalAt(hitSphere, hitPosition);
+				auto const eye = -ray.direction;
+				auto const reflectionColor = lighting(hitSphere.material, lightSource, hitPosition, eye, normal);
+				lightCanvas[col, row] = reflectionColor;
+			}
+		}
+	}
+	std::ofstream outputFile{outputDirectory + "sphereWithReflection.ppm"};
+	printPPM(outputFile, lightCanvas);
+	ASSERT(outputFile);
+}
+
 cute::suite make_suite_ApplicationTestSuite() {
 	cute::suite s { };
 	s.push_back(CUTE(testProjectileTrajectory));
 	s.push_back(CUTE(testProjectileTraceOnCanvas));
 	s.push_back(CUTE(testClockWithRotation));
 	s.push_back(CUTE(testRayHitsSphereCanvas));
+	s.push_back(CUTE(testRayHitsSphereCanvasWithLighting));
 	return s;
 }
