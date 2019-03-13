@@ -11,6 +11,7 @@
 #include "CanvasTestSuite.h"
 #include "MatrixTestSuite.h"
 #include "RayTestSuite.h"
+#include "ReflectionTestSuite.h"
 #include "ShapesTestSuite.h"
 #include "TransformationsTestSuite.h"
 
@@ -47,6 +48,9 @@ bool runAllTests(int argc, char const *argv[]) {
 
 	auto rayTestSuite = make_suite_RayTestSuite();
 	success &= runner(rayTestSuite, "Ray Test Suite");
+
+	auto reflectionTestSuite = make_suite_ReflectionTestSuite();
+	success &= runner(reflectionTestSuite, "Reflection Test Suite");
 
 	auto shapesTestSuite = make_suite_ShapesTestSuite();
 	success &= runner(shapesTestSuite, "Shapes Test Suite");

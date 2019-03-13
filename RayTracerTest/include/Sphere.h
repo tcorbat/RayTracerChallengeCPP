@@ -23,9 +23,10 @@ struct Sphere : operators::equality_comparable<Sphere> {
 };
 
 constexpr Direction normalAt(Sphere const & sphere, Point const point) {
-	auto const objectPoint = inverse(sphere.transform) * point;
+	auto const inverseTransform = inverse(sphere.transform);
+	auto const objectPoint =  inverseTransform * point;
 	auto const objectNormal = objectPoint - Point{0, 0, 0};
-	auto const worldNormal = transpose(inverse(sphere.transform)) * objectNormal;
+	auto const worldNormal = transpose(inverseTransform) * objectNormal;
 	return normalize(worldNormal);
 }
 
