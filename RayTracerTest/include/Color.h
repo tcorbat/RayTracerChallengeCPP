@@ -56,4 +56,14 @@ inline std::ostream & operator<<(std::ostream & out, Color const & color) {
 	return out << "Color(" << color.red << ", " << color.green << ", " << color.blue << ")";
 }
 
+namespace Colors {
+
+constexpr Color white{1.0, 1.0, 1.0};
+constexpr Color black{0.0, 0.0, 0.0};
+constexpr Color red{1.0, 0.0, 0.0};
+constexpr Color green{0.0, 1.0, 0.0};
+constexpr Color blue{0.0, 0.0, 1.0};
+
+}
+
 #endif /* INCLUDE_COLOR_H_ */
