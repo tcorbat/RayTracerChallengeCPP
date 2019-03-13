@@ -83,10 +83,10 @@ constexpr Intersections<Inter...> intersections(Inter const &...inters) {
 }
 
 template <std::size_t N>
-constexpr std::optional<Intersection> hit(std::array<Intersection, N> const & inters) {
+constexpr std::optional<Intersection> hit(std::array<Intersection, N> const & inters, std::size_t count = N) {
 	constexpr auto kNoHitIndex = -1;
 	auto minIndex = kNoHitIndex;
-	for (auto index = 0; index < static_cast<decltype(kNoHitIndex)>(inters.size()); ++index) {
+	for (auto index = 0; index < static_cast<decltype(kNoHitIndex)>(count); ++index) {
 		auto const & current = inters[index];
 		if (current.time >= 0.0) {
 			if (minIndex == kNoHitIndex || inters[minIndex].time > current.time) {
