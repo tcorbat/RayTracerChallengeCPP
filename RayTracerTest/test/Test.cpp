@@ -18,8 +18,10 @@
 
 bool runAllTests(int argc, char const *argv[]) {
 	cute::suite s { };
-	cute::xml_file_opener xmlfile(argc, argv);
+	char const * testResultsFilePath = "TestResults/TestResults";
+	cute::xml_file_opener xmlfile(1, &testResultsFilePath);
 	cute::xml_listener<cute::ide_listener<>> lis(xmlfile.out);
+
 	auto const runner = cute::makeRunner(lis, argc, argv);
 	bool success = runner(s, "AllTests");
 	auto pointTestSuite = make_suite_PointTestSuite();
