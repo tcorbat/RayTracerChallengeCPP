@@ -10,6 +10,7 @@
 #include "ColorTestSuite.h"
 #include "CanvasTestSuite.h"
 #include "LightTestSuite.h"
+#include "MaterialTestSuite.h"
 #include "MatrixTestSuite.h"
 #include "RayTestSuite.h"
 #include "ReflectionTestSuite.h"
@@ -43,6 +44,9 @@ bool runAllTests(int argc, char const *argv[]) {
 
 	auto lightTestSuite = make_suite_LightTestSuite();
 	success &= runner(lightTestSuite, "Light Test Suite");
+
+	auto materialTestSuite = make_suite_MaterialTestSuite();
+	success &= runner(materialTestSuite, "Material Test Suite");
 
 	auto matrixTestSuite = make_suite_MatrixTestSuite();
 	success &= runner(matrixTestSuite, "Matrix Test Suite");
