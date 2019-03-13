@@ -5,7 +5,7 @@
 #include "DoubleComparison.h"
 #include "Operators.h"
 
-struct Material : boost::equality_comparable<Material> {
+struct Material : operators::equality_comparable<Material> {
 	Color color;
 	double ambient;
 	double diffuse;

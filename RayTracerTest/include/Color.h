@@ -2,13 +2,15 @@
 #define INCLUDE_COLOR_H_
 
 #include "DoubleComparison.h"
-#include <boost/operators.hpp>
+#include "Operators.h"
 
-struct Color: boost::equality_comparable<Color>,
-				boost::addable<Color>,
-				boost::subtractable<Color>,
-				boost::multipliable<Color, double>,
-				boost::multipliable<Color> {
+#include <ostream>
+
+struct Color: operators::equality_comparable<Color>,
+				operators::addable<Color>,
+				operators::subtractable<Color>,
+				operators::multipliable<Color, double>,
+				operators::multipliable<Color> {
 	double red{};
 	double green{};
 	double blue{};
@@ -53,6 +55,7 @@ constexpr inline Color & operator*=(Color & lhs, Color const & rhs) noexcept {
 }
 
 inline std::ostream & operator<<(std::ostream & out, Color const & color) {
+	out.precision(8);
 	return out << "Color(" << color.red << ", " << color.green << ", " << color.blue << ")";
 }
 
